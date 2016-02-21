@@ -44,7 +44,7 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
 
         _Engineer_Id = 0;
         Intent intent = getIntent();
-        _Engineer_Id = intent.getIntExtra("engineer_Id", 0);
+        _Engineer_Id = intent.getIntExtra("engineerName", 0);
         if (_Engineer_Id > 0) {
             restService.getService().getEngineerByID(_Engineer_Id, new Callback<Engineer>() {
                 @Override

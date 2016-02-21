@@ -60,4 +60,25 @@ public interface InstituteService {
     public void addReport(@Body Report report,Callback<Report> callback);
 
 
+    //Customers
+    //i.e. http://servicereport-m.azurewebsites.net/api/customers
+    @GET("/customers")
+    public void getCustomer(Callback<List<Customer>> callback);
+
+    //i.e. http://servicereport-m.azurewebsites.net/api/customers/1
+    //Get customer record base on ID
+    @GET("/customers/{id}")
+    public void getCustomerByID(@Path("id") Integer id,Callback<Customer> callback);
+
+    //i.e. http://servicereport-m.azurewebsites.net/api/customerss/1
+    //Update customer record and post content in HTTP request BODY
+    @PUT("/customers/{id}")
+    public void updateCustomerById(@Path("id") Integer id,@Body Customer customer,Callback<Customer> callback);
+
+    //i.e. http://servicereport-m.azurewebsites.net/api/customers/
+    //Create & Add customer record and post content in HTTP request BODY
+    @POST("/customers")
+    public void addCustomer(@Body Customer customer,Callback<Customer> callback);
+
+
 }

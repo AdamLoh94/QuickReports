@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/editTextUsername"
+        android:id="@+id/editTextPw"
         android:layout_alignTop="@+id/textViewPw"
         android:layout_alignStart="@+id/editTextName" />
 
@@ -79,9 +79,9 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editTextPw"
+        android:id="@+id/editTextUsername"
         android:layout_below="@+id/editTextName"
-        android:layout_alignStart="@+id/editTextUsername"
+        android:layout_alignStart="@+id/editTextPw"
         android:layout_alignEnd="@+id/editTextName" />
 
     <TextView
@@ -100,8 +100,8 @@
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/editTextEmail"
-        android:layout_below="@+id/editTextUsername"
-        android:layout_alignStart="@+id/editTextUsername" />
+        android:layout_below="@+id/editTextPw"
+        android:layout_alignStart="@+id/editTextPw" />
 
     <TextView
         android:layout_width="wrap_content"

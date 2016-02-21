@@ -53,7 +53,8 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             Toast.makeText(LoginActivity.this, "Redirecting..", Toast.LENGTH_SHORT).show();
                             session.createUserLoginSession(a.Id, a.Username);
-                            Intent intent = new Intent("com.example.user.projecttest.MainActivity");
+                            //Intent intent = new Intent("com.example.user.projecttest.MainActivity");
+                            Intent intent = new Intent("com.mercury.gabadam.quickreports.HomeActivity");
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             // Add new Flag to start new Activity
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
