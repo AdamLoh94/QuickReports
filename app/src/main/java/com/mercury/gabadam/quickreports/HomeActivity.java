@@ -8,7 +8,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -23,7 +26,9 @@ public class HomeActivity extends AppCompatActivity {
     RestService restService;
     TextView engineerName;
     UserSessionManager session;
+    private List<Report> list;
     Button logOut;
+    private int custId;
 
 
     @Override
@@ -38,6 +43,7 @@ public class HomeActivity extends AppCompatActivity {
             finish();
         }
         refreshScreen();
+
     }
 
     private void refreshScreen(){

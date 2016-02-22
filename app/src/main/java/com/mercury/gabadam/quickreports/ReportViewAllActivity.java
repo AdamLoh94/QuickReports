@@ -23,7 +23,7 @@ import retrofit.client.Response;
 
 public class ReportViewAllActivity extends Activity {
 
-    private ArrayList<HashMap> list;
+    private ArrayList<Report> list;
     private String custName;
 
     RestService restService;
@@ -58,48 +58,6 @@ public class ReportViewAllActivity extends Activity {
                                                }
                                            }
         );
-    }
-
-    private void populateList() {
-        restService.getService().getReport(new Callback<List<Report>>() {
-            @Override
-            public void success(List<Report> reports, Response response) {
-                list = new ArrayList<HashMap>();
-
-                for (Report r : reports) {
-                    if (r.EngineerId == session.getUserId()) {
-                        HashMap temp = new HashMap();
-                        temp.put(FIRST_COLUMN, r.Id);
-                        temp.put(SECOND_COLUMN, customerName(r.CustomerId));
-                        temp.put(THIRD_COLUMN, r.Date);
-                        list.add(temp);
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-                Toast.makeText(ReportViewAllActivity.this, error.getMessage().toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private String customerName(int customerId) {
-        restService.getService().getCustomerByID(customerId, new Callback<Customer>() {
-            @Override
-            public void success(Customer customer, Response response) {
-                custName = customer.Name;
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-                Toast.makeText(ReportViewAllActivity.this, error.getMessage().toString(), Toast.LENGTH_LONG).show();
-
-            }
-        });
-        return custName;
     }
 
 

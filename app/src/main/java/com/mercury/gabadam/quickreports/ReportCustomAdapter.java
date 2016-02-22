@@ -41,28 +41,23 @@ public class ReportCustomAdapter extends ArrayAdapter<Report> {
 
         if (report != null) {
             TextView tvReportId = (TextView) v.findViewById(R.id.firstText);
-            TextView tvCustomerId = (TextView) v.findViewById(R.id.secondText);
+            final TextView tvCustomerId = (TextView) v.findViewById(R.id.secondText);
             TextView tvDateId = (TextView) v.findViewById(R.id.thirdText);
             tvReportId.setText( Integer.toString(report.Id));
-            tvCustomerId.setText( customerName(report.CustomerId));
+            restService.getService().getCustomerByID(report.CustomerId, new Callback<Customer>() {
+                @Override
+                public void success(Customer customer, Response response) {
+                    tvCustomerId.setText(customer.Name);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+
+                }
+            });
             tvDateId.setText(report.Date);
         }
 
         return v;
-    }
-
-    private String customerName(int customerId) {
-        restService.getService().getCustomerByID(customerId, new Callback<Customer>() {
-            @Override
-            public void success(Customer customer, Response response) {
-                custName = customer.Name;
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-        return custName;
     }
 }
