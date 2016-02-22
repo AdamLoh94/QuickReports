@@ -22,7 +22,7 @@ public class UserSessionManager {
     // Shared pref mode
     int PRIVATE_MODE = 0;
     // Sharedpref file name
-    private static final String PREFER_NAME = "AndroidExamplePref";
+    private static final String PREFER_NAME = "GabAdamQuickReportsPref";
     // All Shared Preferences Keys
     private static final String IS_USER_LOGIN = "IsUserLoggedIn";
     // User name (make variable public to access from outside)
