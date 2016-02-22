@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.mercury.gabadam.quickreports.HomeActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/engineerName"
+        android:textSize="20sp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonReport"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/engineerName"
+        android:text="Report"
+        android:onClick="onViewAllReportClick"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonCustomer"
+        android:layout_alignTop="@+id/buttonReport"
+        android:layout_toEndOf="@+id/engineerName"
+        android:text="Customer"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonReport"
+        android:layout_alignStart="@+id/buttonReport"
+        android:layout_marginTop="24dp"
+        android:id="@+id/buttonEngineer"
+        android:text="Engineer"
+        android:onClick="onAddEngineer"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/buttonEngineer"
+        android:layout_alignStart="@+id/buttonCustomer"
+        android:id="@+id/buttonInfo"
+        android:text="Self-Info"
+        android:onClick="onClickViewInfo"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/buttonLogout"
+        android:onClick="onLogoutClick"
+        android:text="Logout"/>
+
+
+</RelativeLayout>
