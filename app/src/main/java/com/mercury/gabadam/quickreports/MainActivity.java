@@ -22,12 +22,12 @@ import retrofit.client.Response;
 public class MainActivity extends AppCompatActivity implements android.view.View.OnClickListener {
 
     ListView listView;
-    Button btnGetAll, btnAdd, btnReport, btnLogout;
+    Button btnGetAll, btnAdd, btnBack;
     RestService restService;
     TextView engineer_Id;
     // User Session Manager Class
     UserSessionManager session;
-//test code gab
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -40,11 +40,8 @@ public class MainActivity extends AppCompatActivity implements android.view.View
         btnAdd = (Button) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(this);
 
-        btnReport = (Button) findViewById(R.id.btnReport);
-        btnReport.setOnClickListener(this);
-
-        btnLogout = (Button) findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(this);
+        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(this);
 
         session = new UserSessionManager(getApplicationContext());
 
@@ -98,21 +95,14 @@ public class MainActivity extends AppCompatActivity implements android.view.View
         {
 
             Intent intent = new Intent(this,Detail.class);
-            intent.putExtra("engineer_Id",0);
+            intent.putExtra("engineerName",0);
             startActivity(intent);
 
         }
-        else if (v== findViewById(R.id.btnReport))
+        else if (v== findViewById(R.id.btnBack))
         {
-            Intent intent = new Intent(this,ReportMainActivity.class);
-            intent.putExtra("report_Id",0);
+            Intent intent = new Intent(this,HomeActivity.class);
             startActivity(intent);
-        }
-        else if (v == findViewById(R.id.btnLogout))
-        {
-            // Clear the User session data
-            // and redirect user to LoginActivity
-            session.logoutUser();
         }
         else
         {
@@ -121,38 +111,38 @@ public class MainActivity extends AppCompatActivity implements android.view.View
         }
     }
 
-    //private void refreshScreen()
-    //{
+    private void refreshScreen()
+    {
 
         //Call to server to grab list of student records. this is a asyn
-        //restService.getService().getEngineer(new Callback<List<Engineer>>() {
-            //@Override
-            //public void success(List<Engineer> engineers, Response response) {
-                //ListView lv = (ListView) findViewById(R.id.listView);
+        restService.getService().getEngineer(new Callback<List<Engineer>>() {
+            @Override
+            public void success(List<Engineer> engineers, Response response) {
+                ListView lv = (ListView) findViewById(R.id.listView);
 
-                //CustomAdapter customAdapter = new CustomAdapter(MainActivity.this, R.layout.view_engineer, engineers);
+                CustomAdapter customAdapter = new CustomAdapter(MainActivity.this, R.layout.view_engineer, engineers);
 
-                //lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    //@Override
-                    //public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        //engineer_Id = (TextView) view.findViewById(R.id.engineer_Id);
-                        //String engineerId = engineer_Id.getText().toString();
-                        //Intent objIndent = new Intent(getApplicationContext(), Detail.class);
-                        //objIndent.putExtra("engineer_Id", Integer.parseInt(engineerId));
-                        //startActivity(objIndent);
-                //    }
-                //});
-                //lv.setAdapter(customAdapter);
-            //}
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        engineer_Id = (TextView) view.findViewById(R.id.engineer_Id);
+                        String engineerId = engineer_Id.getText().toString();
+                        Intent objIndent = new Intent(getApplicationContext(), Detail.class);
+                        objIndent.putExtra("engineerName", Integer.parseInt(engineerId));
+                        startActivity(objIndent);
+                    }
+                });
+                lv.setAdapter(customAdapter);
+            }
 
-            //@Override
-            //public void failure(RetrofitError error) {
-                //Toast.makeText(MainActivity.this, error.getMessage().toString(), Toast.LENGTH_LONG).show();
-            //}
-        //});
-    //}
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(MainActivity.this, error.getMessage().toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
-    private void refreshScreen()
+    /*private void refreshScreen()
     {
 
         //Call to server to grab list of student records. this is a asyn
@@ -189,5 +179,5 @@ public class MainActivity extends AppCompatActivity implements android.view.View
             }
         });
 
-    }
+    }*/
 }

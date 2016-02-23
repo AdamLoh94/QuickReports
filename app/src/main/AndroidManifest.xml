@@ -17,12 +17,9 @@
         <activity android:name="com.mercury.gabadam.quickreports.MainActivity">
             <intent-filter>
             <action android:name="com.example.user.projecttest.MainActivity" />
-            <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         -->
@@ -39,6 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".Detail" />
         <activity android:name=".ReportMainActivity" />
         <activity android:name=".ReportDetail" />

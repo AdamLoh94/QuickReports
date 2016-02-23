@@ -42,7 +42,10 @@ public class HomeActivity extends AppCompatActivity {
         if(session.checkLogin()) {
             finish();
         }
-        refreshScreen();
+        else
+        {
+            refreshScreen();
+        }
 
     }
 
@@ -79,14 +82,9 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(objIndent);
     }
 
-    public void onAddEngineer(View view) {
-        Intent intent = new Intent(this,Detail.class);
+    public void onViewAllEngineer(View view) {
+        Intent intent = new Intent(this,MainActivity.class);
         intent.putExtra("engineerName",0);
-        startActivity(intent);
-    }
-
-    public void onClickCustomer(View view) {
-        Intent intent = new Intent(this,CustomerMainActivity.class);
         startActivity(intent);
     }
 }

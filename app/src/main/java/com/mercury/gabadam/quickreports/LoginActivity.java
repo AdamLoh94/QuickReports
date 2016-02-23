@@ -18,7 +18,6 @@ public class LoginActivity extends AppCompatActivity {
 
     RestService restService;
     private EditText editTextUsername, editTextPw;
-    List<Engineer> eList = new ArrayList<Engineer>();
 
     // User Session Manager Class
     UserSessionManager session;
