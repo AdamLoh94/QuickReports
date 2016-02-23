@@ -75,6 +75,11 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onClickCustomer(View view) {
+        Intent intent = new Intent(this,CustomerMainActivity.class);
+        startActivity(intent);
+    }
+
     public void onClickViewInfo(View view) {
         engineerName = (TextView)view.findViewById(R.id.engineerName);
         Intent objIndent = new Intent(getApplicationContext(), Detail.class);
