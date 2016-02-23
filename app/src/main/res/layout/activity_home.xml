@@ -34,7 +34,8 @@
         android:id="@+id/buttonCustomer"
         android:layout_alignTop="@+id/buttonReport"
         android:layout_toEndOf="@+id/engineerName"
-        android:text="Customer"/>
+        android:text="Customer"
+        android:onClick="onClickCustomer"/>
 
     <Button
         android:layout_width="wrap_content"

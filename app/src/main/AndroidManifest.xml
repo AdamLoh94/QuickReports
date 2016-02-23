@@ -12,6 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!--
         <activity android:name="com.mercury.gabadam.quickreports.MainActivity">
             <intent-filter>
@@ -26,9 +27,10 @@
         </activity>
         -->
 
-        <activity android:name="com.mercury.gabadam.quickreports.HomeActivity">
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="com.mercury.gabadam.quickreports.HomeActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
@@ -37,12 +39,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.mercury.gabadam.quickreports.Detail" />
-        <activity android:name="com.mercury.gabadam.quickreports.ReportMainActivity" />
-        <activity android:name="com.mercury.gabadam.quickreports.ReportDetail" />
-        <activity android:name="com.mercury.gabadam.quickreports.LoginActivity"></activity>
-        <activity android:name="com.mercury.gabadam.quickreports.ReportViewAllActivity"></activity>
+        <activity android:name=".Detail" />
+        <activity android:name=".ReportMainActivity" />
+        <activity android:name=".ReportDetail" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".ReportViewAllActivity" />
+        <activity android:name=".CustomerMainActivity" />
+        <activity android:name=".CustomerDetailsActivity"></activity>
     </application>
 
 </manifest>

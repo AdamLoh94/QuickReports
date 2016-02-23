@@ -84,4 +84,9 @@ public class HomeActivity extends AppCompatActivity {
         intent.putExtra("engineerName",0);
         startActivity(intent);
     }
+
+    public void onClickCustomer(View view) {
+        Intent intent = new Intent(this,CustomerMainActivity.class);
+        startActivity(intent);
+    }
 }

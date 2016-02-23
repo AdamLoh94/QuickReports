@@ -10,4 +10,5 @@ public class Customer {
     public int Contact;
     public String Customeraddress;
     public int EngineerId;
+    public boolean Active;
 }
