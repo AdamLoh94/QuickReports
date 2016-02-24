@@ -13,7 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ public class ReportViewAllActivity extends Activity {
 
     private ArrayList<Report> list;
     private String custName;
+    private ListView lview;
 
     RestService restService;
     UserSessionManager session;
@@ -33,12 +37,12 @@ public class ReportViewAllActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.report_main);
-
+        restService = new RestService();
         session = new UserSessionManager(getApplicationContext());
+
         if (session.checkLogin()) {
             finish();
         }
-        restService = new RestService();
         refreshScreen();
     }
 
@@ -47,9 +51,19 @@ public class ReportViewAllActivity extends Activity {
 
                                                @Override
                                                public void success(List<Report> reports, Response response) {
-                                                   ListView lview = (ListView) findViewById(R.id.listview);
+                                                   lview = (ListView) findViewById(R.id.listview);
                                                    ReportCustomAdapter reportCustomAdapter = new ReportCustomAdapter(ReportViewAllActivity.this, R.layout.reports_listview_row, reports);
                                                    lview.setAdapter(reportCustomAdapter);
+                                                   lview.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+                                                       @Override
+                                                       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                           Report item = (Report) lview.getItemAtPosition(position);
+                                                           int reportId = item.Id;
+                                                           Intent objIndent = new Intent(getApplicationContext(), ReportDetail.class);
+                                                           objIndent.putExtra("reportId", reportId);
+                                                           startActivity(objIndent);
+                                                       }
+                                                   });
                                                }
 
                                                @Override
