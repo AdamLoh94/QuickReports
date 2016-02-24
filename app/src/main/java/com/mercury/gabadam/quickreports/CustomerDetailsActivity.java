@@ -8,7 +8,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -17,15 +22,21 @@ import retrofit.client.Response;
 public class CustomerDetailsActivity extends AppCompatActivity implements android.view.View.OnClickListener {
 
     Button btnSave, btnClose;
-    EditText editTextCustID, editTextName, editTextContact, editTextAddress, editTextEngID, editTextActive;
+    EditText editTextCustID, editTextName, editTextContact, editTextAddress, editTextEngName;
+    RadioButton rbTrue, rbFalse;
+    RadioGroup activeRG;
+    List<Engineer> engAll;
+    ArrayList<String> engName = new ArrayList<String>();
     private int _Customer_Id = 0;
     RestService restService;
+    UserSessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         restService = new RestService();
         setContentView(R.layout.activity_customer_details);
+        session = new UserSessionManager(getApplicationContext());
 
         btnSave = (Button) findViewById(R.id.btnSave);
         btnClose = (Button) findViewById(R.id.btnClose);
@@ -37,8 +48,28 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
         editTextName = (EditText) findViewById(R.id.editTextName);
         editTextContact = (EditText) findViewById(R.id.editTextContact);
         editTextAddress = (EditText) findViewById(R.id.editTextAddress);
-        editTextEngID = (EditText) findViewById(R.id.editTextEngID);
-        editTextActive = (EditText) findViewById(R.id.editTextActive);
+        editTextEngName = (EditText) findViewById(R.id.editTextEngName);
+
+        activeRG = (RadioGroup) findViewById(R.id.ActiveRG);
+        rbTrue = (RadioButton) findViewById(R.id.activeTrue);
+        rbFalse = (RadioButton) findViewById(R.id.activeFalse);
+
+        restService.getService().getEngineer(new Callback<List<Engineer>>() {
+            @Override
+            public void success(List<Engineer> engineers, Response response) {
+                engAll = engineers;
+                for(Engineer e: engineers)
+                {
+                    engName.add(String.valueOf(e.Name));
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
 
         _Customer_Id = 0;
         Intent intent = getIntent();
@@ -52,8 +83,25 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
                     editTextName.setText(customer.Name);
                     editTextContact.setText(String.valueOf(customer.Contact));
                     editTextAddress.setText(customer.Customeraddress);
-                    editTextEngID.setText(String.valueOf(customer.EngineerId));
-                    editTextActive.setText(String.valueOf(customer.Active));
+
+                    restService.getService().getEngineerByID(customer.EngineerId, new Callback<Engineer>() {
+                        @Override
+                        public void success(Engineer engineer, Response response) {
+                            editTextEngName.setText(String.valueOf(engineer.Name));
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {   }
+                    });
+
+                    if(customer.Active)
+                    {
+                        activeRG.check(R.id.activeTrue);
+                    }
+                    else
+                    {
+                        activeRG.check(R.id.activeFalse);
+                    }
                 }
 
                 @Override
@@ -61,8 +109,13 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
                     Toast.makeText(CustomerDetailsActivity.this, error.getMessage().toString(), Toast.LENGTH_LONG).show();
 
                 }
+
+
             });
         }
+
+
+
 
     }
 
@@ -104,8 +157,37 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
             customer.Name = editTextName.getText().toString();
             customer.Contact = Integer.parseInt(editTextContact.getText().toString());
             customer.Customeraddress = editTextAddress.getText().toString();
-            customer.EngineerId = Integer.parseInt(editTextEngID.getText().toString());
-            customer.Active = Boolean.parseBoolean(editTextActive.getText().toString());
+//            customer.EngineerId = Integer.parseInt(editTextEngName.getText().toString());
+
+            boolean checkExist = false;
+
+            //check customer exist
+            loop1:
+            for (Engineer e : engAll) {
+                if (e.Name.equals(editTextEngName.getText().toString())) {
+                    customer.EngineerId = e.Id;
+                    Toast.makeText(CustomerDetailsActivity.this, "Engineer successfully added!",
+                            Toast.LENGTH_SHORT).show();
+                    checkExist = true;
+                    break loop1;
+                }
+            }
+
+            if(checkExist == false){
+                Toast.makeText(CustomerDetailsActivity.this, "Engineer does not exist!",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if(rbTrue.isChecked())
+            {
+                customer.Active=true;
+            }
+            else if(rbFalse.isChecked())
+            {
+                customer.Active=false;
+            }
+
             customer.CustomerId = _Customer_Id;
 
             if (_Customer_Id == 0)

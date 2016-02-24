@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import retrofit.Callback;
@@ -17,7 +19,9 @@ import retrofit.client.Response;
 public class Detail extends AppCompatActivity implements android.view.View.OnClickListener {
 
     Button btnSave, btnClose;
-    EditText editTextId, editTextName, editTextUsername, editTextPw, editTextEmail, editTextHP, editTextAdmin, editTextActive;
+    EditText editTextId, editTextName, editTextUsername, editTextPw, editTextEmail, editTextHP;
+    RadioButton engActiveTrue, engActiveFalse, adminTrue, adminFalse;
+    RadioGroup engActiveRG, engAdminRG;
     private int _Engineer_Id = 0;
     RestService restService;
 
@@ -36,8 +40,15 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
         editTextPw = (EditText) findViewById(R.id.editTextPw);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextHP = (EditText) findViewById(R.id.editTextHP);
-        editTextAdmin = (EditText) findViewById(R.id.editTextAdmin);
-        editTextActive = (EditText) findViewById(R.id.editTextActive);
+
+        engActiveRG = (RadioGroup) findViewById(R.id.engActiveRG);
+        engActiveTrue = (RadioButton) findViewById(R.id.engActiveTrue);
+        engActiveFalse = (RadioButton) findViewById(R.id.engActiveFalse);
+
+
+        engAdminRG = (RadioGroup) findViewById(R.id.engAdminRG);
+        adminTrue = (RadioButton) findViewById(R.id.adminTrue);
+        adminFalse = (RadioButton) findViewById(R.id.adminFalse);
 
         btnSave.setOnClickListener(this);
         btnClose.setOnClickListener(this);
@@ -56,8 +67,24 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
                     editTextPw.setText(String.valueOf(engineer.Password));
                     editTextEmail.setText(engineer.Email);
                     editTextHP.setText(String.valueOf(engineer.PhoneNum));
-                    editTextAdmin.setText(String.valueOf(engineer.Admin));
-                    editTextActive.setText(String.valueOf(engineer.Active));
+
+                    if(engineer.Admin)
+                    {
+                        engAdminRG.check(R.id.adminTrue);
+                    }
+                    else
+                    {
+                        engAdminRG.check(R.id.adminFalse);
+                    }
+
+                    if(engineer.Active)
+                    {
+                        engActiveRG.check(R.id.engActiveTrue);
+                    }
+                    else
+                    {
+                        engActiveRG.check(R.id.engActiveFalse);
+                    }
                 }
 
                 @Override
@@ -91,6 +118,11 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
+    public void randomAssign()
+    {
+
+    }
+
     @Override
     public void onClick(View v)
     {
@@ -109,8 +141,25 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
             engineer.Password = editTextPw.getText().toString();
             engineer.Email = editTextEmail.getText().toString();
             engineer.PhoneNum = Integer.parseInt(editTextHP.getText().toString());
-            engineer.Admin = Boolean.parseBoolean(editTextAdmin.getText().toString());
-            engineer.Active = Boolean.parseBoolean(editTextActive.getText().toString());
+
+            if(adminTrue.isChecked())
+            {
+                engineer.Admin=true;
+            }
+            else if(adminFalse.isChecked())
+            {
+                engineer.Admin=false;
+            }
+
+            if(engActiveTrue.isChecked())
+            {
+                engineer.Active=true;
+            }
+            else if(engActiveFalse.isChecked())
+            {
+                engineer.Active=false;
+            }
+
             engineer.Id = _Engineer_Id;
 
             if (_Engineer_Id == 0)

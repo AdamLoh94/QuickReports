@@ -132,14 +132,6 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextAdmin"
-        android:layout_alignTop="@+id/textViewAdmin"
-        android:layout_alignStart="@+id/editTextHP"
-        android:layout_alignEnd="@+id/editTextHP" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -149,14 +141,6 @@
         android:layout_below="@+id/textViewAdmin"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextActive"
-        android:layout_below="@+id/editTextAdmin"
-        android:layout_alignStart="@+id/editTextAdmin"
-        android:layout_alignEnd="@+id/editTextAdmin" />
 
     <Button
         android:layout_width="wrap_content"
@@ -173,5 +157,49 @@
         android:id="@+id/btnClose"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/editTextHP"
+        android:layout_alignStart="@+id/editTextHP"
+        android:id="@+id/engAdminRG"
+        android:layout_alignBottom="@+id/textViewActive">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/adminTrue"
+            android:text="True"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/adminFalse"
+            android:text="False"/>
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/engAdminRG"
+        android:layout_alignStart="@+id/engAdminRG"
+        android:id="@+id/engActiveRG"
+        android:layout_above="@+id/btnSave">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/engActiveTrue"
+            android:text="True"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/engActiveFalse"
+            android:text="False"/>
+
+    </RadioGroup>
 
 </RelativeLayout>

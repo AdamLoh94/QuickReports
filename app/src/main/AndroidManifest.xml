@@ -38,10 +38,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.mercury.gabadam.quickreports.MainActivity" />
         <activity android:name="com.mercury.gabadam.quickreports.Detail" />
         <activity android:name="com.mercury.gabadam.quickreports.ReportMainActivity" />
         <activity android:name="com.mercury.gabadam.quickreports.ReportDetail" />
-        <activity android:name="com.mercury.gabadam.quickreports.LoginActivity"></activity>
+        <activity android:name="com.mercury.gabadam.quickreports.CustomerMainActivity" />
+        <activity android:name="com.mercury.gabadam.quickreports.CustomerDetailsActivity" />
+        <activity android:name="com.mercury.gabadam.quickreports.LoginActivity" />
         <activity android:name="com.mercury.gabadam.quickreports.ReportViewAllActivity"></activity>
         <activity android:name="com.mercury.gabadam.quickreports.ReportEdit"></activity>
         <activity android:name="com.mercury.gabadam.quickreports.ReportNew"></activity>

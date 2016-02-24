@@ -24,7 +24,8 @@
         android:id="@+id/editTextCustID"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/textViewCustID" />
+        android:layout_toEndOf="@+id/textViewCustID"
+        android:layout_alignStart="@+id/editTextAddress" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,8 +42,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/editTextName"
         android:layout_below="@+id/editTextCustID"
-        android:layout_alignStart="@+id/editTextCustID"
-        android:layout_alignEnd="@+id/editTextCustID" />
+        android:layout_alignEnd="@+id/editTextCustID"
+        android:layout_alignStart="@+id/editTextAddress" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -60,7 +61,7 @@
         android:id="@+id/editTextContact"
         android:layout_below="@+id/editTextName"
         android:layout_alignEnd="@+id/editTextName"
-        android:layout_alignStart="@+id/editTextName" />
+        android:layout_alignStart="@+id/editTextAddress" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -78,14 +79,14 @@
         android:id="@+id/editTextAddress"
         android:layout_below="@+id/editTextContact"
         android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/editTextContact" />
+        android:layout_toEndOf="@+id/textViewEngName" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Engineer ID"
-        android:id="@+id/textViewEngID"
+        android:text="Engineer Name"
+        android:id="@+id/textViewEngName"
         android:layout_below="@+id/textViewAddress"
         android:layout_alignParentStart="true"
         android:layout_marginTop="30dp"/>
@@ -94,10 +95,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:id="@+id/editTextEngID"
-        android:layout_alignTop="@+id/textViewEngID"
+        android:id="@+id/editTextEngName"
+        android:layout_alignTop="@+id/textViewEngName"
         android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/editTextAddress" />
+        android:layout_toEndOf="@+id/textViewEngName" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -105,17 +106,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Active(T/F)"
         android:id="@+id/textViewActive"
-        android:layout_below="@+id/textViewEngID"
+        android:layout_below="@+id/textViewEngName"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextActive"
-        android:layout_below="@+id/editTextEngID"
-        android:layout_alignEnd="@+id/editTextEngID"
-        android:layout_alignStart="@+id/editTextEngID" />
 
     <Button
         android:layout_width="wrap_content"
@@ -132,6 +125,28 @@
         android:id="@+id/btnClose"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ActiveRG"
+        android:layout_below="@+id/editTextEngName"
+        android:layout_toEndOf="@+id/textViewActive"
+        android:layout_alignStart="@+id/editTextEngName">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/activeTrue"
+            android:text="True"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/activeFalse"
+            android:text="False"/>
+
+    </RadioGroup>
 
 
 </RelativeLayout>
