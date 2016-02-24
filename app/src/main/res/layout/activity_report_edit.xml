@@ -203,7 +203,8 @@
         android:ems="10"
         android:layout_below="@+id/tvEditRepId"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="55dp" />
+        android:layout_marginTop="55dp"
+        android:focusable="false"/>
 
     <RadioGroup
         android:layout_width="wrap_content"
@@ -316,8 +317,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/etEditRepComments"
+        android:ems="10"
         android:layout_below="@+id/etEditRepTotal"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignStart="@+id/etEditRepTotal" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -334,7 +336,8 @@
         android:text="Back"
         android:id="@+id/btnEditRepBack"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="onEditRepBack"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -342,15 +345,17 @@
         android:text="Save"
         android:id="@+id/btnEditRepSave"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="onEditRepSave"/>
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/etEditRepTest"
+        android:layout_height="40dp"
+        android:text="New Text"
+        android:id="@+id/tvEditRepCustName"
+        android:gravity="center"
         android:layout_below="@+id/tvEditRepId"
-        android:layout_alignStart="@+id/etEditRepDate"
-        android:ems="10"/>
+        android:layout_alignStart="@+id/etEditRepDate" />
 
 </RelativeLayout>
 </ScrollView>

@@ -13,12 +13,11 @@ import retrofit.client.Response;
 /**
  * Created by AdamLoh on 24/2/2016.
  */
-public class CustNameList extends Application {
+public class CustNameList {
     public String[] custList;
-    public ArrayList<String> custNames;
 
     public CustNameList(){
-
+        super();
     }
 
     public String[] getCustList(){
@@ -26,13 +25,9 @@ public class CustNameList extends Application {
         restService.getService().getCustomer(new Callback<List<Customer>>() {
             @Override
             public void success(List<Customer> customers, Response response) {
-                custNames = new ArrayList<String>();
-                for(Customer c : customers) {
-                    custNames.add(c.Name);
-                }
-                custList = new String[custNames.size()];
-                for(int i=0; i<custNames.size(); i++) {
-                    custList[i] = custNames.get(i);
+                custList = new String[customers.size()];
+                for(int i=0; i<customers.size(); i++){
+                    custList[i]=customers.get(i).Name;
                 }
             }
 

@@ -7,13 +7,19 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 /**
  * Created by AdamLoh on 24/2/2016.
  */
 public class AlertDialogRadio extends DialogFragment {
 
-    public String[] custList;
-    CustNameList cust = new CustNameList();
+    CustNameList custNameList = new CustNameList();
 
     AlertPositiveListener alertPositiveListener;
 
@@ -31,6 +37,10 @@ public class AlertDialogRadio extends DialogFragment {
             throw new ClassCastException(activity.toString() + " must implement AlertPositiveListener");
         }
     }
+    public AlertDialogRadio(){
+        super();
+    }
+
 
     DialogInterface.OnClickListener positiveListener = new DialogInterface.OnClickListener() {
         @Override
@@ -43,7 +53,6 @@ public class AlertDialogRadio extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        RestService restService = new RestService();
 
         /** Getting the arguments passed to this fragment */
         Bundle bundle = getArguments();
@@ -56,7 +65,8 @@ public class AlertDialogRadio extends DialogFragment {
         b.setTitle("Choose your version");
 
         /** Setting items to the alert dialog */
-        b.setSingleChoiceItems(cust.getCustList(), position, null);
+
+        b.setSingleChoiceItems(custNameList.getCustList(), position, null);
 
         /** Setting a positive button and its listener */
         b.setPositiveButton("OK",positiveListener);

@@ -75,4 +75,12 @@ public class ReportViewAllActivity extends Activity {
     }
 
 
+    public void onViewAllRepBackClick(View view) {
+        finish();
+    }
+
+    public void onAddNewReportClick(View view) {
+        Intent objIndent = new Intent(getApplicationContext(), ReportNew.class);
+        startActivity(objIndent);
+    }
 }

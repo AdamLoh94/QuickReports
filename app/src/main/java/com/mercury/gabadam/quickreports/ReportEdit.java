@@ -1,6 +1,8 @@
 package com.mercury.gabadam.quickreports;
 
 import android.app.Activity;
+import android.app.Application;
+import android.app.DatePickerDialog;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,18 +10,26 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListPopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.CalendarView;
+import android.widget.Toast;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -28,30 +38,26 @@ import retrofit.client.Response;
 /**
  * Created by AdamLoh on 24/2/2016.
  */
-public class ReportEdit extends Activity implements AlertDialogRadio.AlertPositiveListener {
+public class ReportEdit extends AppCompatActivity {
 
-    TextView tvEditRepId, tvEditRepEngName;
+    TextView tvEditRepId, tvEditRepEngName, tvEditRepCustName;
 
     EditText etEditRepDate, etEditRepLabour, etEditRepMaterial, etEditRepTransport,
-            etEditRepTotal, etEditRepComments, etEditRepTest;
+            etEditRepTotal, etEditRepComments;
 
     RadioButton rbEditRepYes, rbEditRepNo, rbEditRepInstallation,
             rbEditRepRepair, rbEditRepMaintenance, rbEditRepTerminate;
 
     RadioGroup rgEditRepWarranty, rgEditRepService;
 
-    Button btnEditRepBack, getBtnEditRepSave;
-
-    List<Customer> custList;
-    ArrayList<String> custNameList;
 
     private int _Report_Id = 0;
     RestService restService;
     UserSessionManager session;
 
-    int position = 0;
-
-    CustNameList customerName = new CustNameList();
+    int custId = 0;
+    int repId = 0;
+    int engId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +66,9 @@ public class ReportEdit extends Activity implements AlertDialogRadio.AlertPositi
         restService = new RestService();
         session = new UserSessionManager(getApplicationContext());
 
-        custList = new ArrayList<>();
-        custNameList = new ArrayList<>();
-
         tvEditRepId = (TextView) findViewById(R.id.tvEditRepId);
         tvEditRepEngName = (TextView) findViewById(R.id.tvEditRepEngName);
+        tvEditRepCustName = (TextView) findViewById(R.id.tvEditRepCustName);
 
         etEditRepDate = (EditText) findViewById(R.id.etEditRepDate);
         etEditRepLabour = (EditText) findViewById(R.id.etEditRepLabour);
@@ -72,9 +76,6 @@ public class ReportEdit extends Activity implements AlertDialogRadio.AlertPositi
         etEditRepTransport = (EditText) findViewById(R.id.etEditRepTransport);
         etEditRepTotal = (EditText) findViewById(R.id.etEditRepTotal);
         etEditRepComments = (EditText) findViewById(R.id.etEditRepComments);
-
-        //test stuff
-        etEditRepTest = (EditText) findViewById(R.id.etEditRepTest);
 
 
         rbEditRepYes = (RadioButton) findViewById(R.id.rbEditRepYes);
@@ -87,28 +88,30 @@ public class ReportEdit extends Activity implements AlertDialogRadio.AlertPositi
         rgEditRepWarranty = (RadioGroup) findViewById(R.id.rgEditRepWarranty);
         rgEditRepService = (RadioGroup) findViewById(R.id.rgEditRepService);
 
-        btnEditRepBack = (Button) findViewById(R.id.btnEditRepBack);
-        getBtnEditRepSave = (Button) findViewById(R.id.btnEditRepSave);
-
-
 
         Intent intent = getIntent();
         _Report_Id = intent.getIntExtra("reportId", 0);
         restService.getService().getReportByID(_Report_Id, new Callback<Report>() {
             @Override
             public void success(Report report, Response response) {
+                repId = report.Id;
                 tvEditRepId.setText(String.valueOf(report.Id));
+                
                 restService.getService().getCustomerByID(report.CustomerId, new Callback<Customer>() {
                     @Override
                     public void success(Customer customer, Response response) {
+                        custId = customer.CustomerId;
+                        tvEditRepCustName.setText(String.valueOf(customer.Name));
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
 
                     }
-
                 });
+
+                etEditRepDate.setText(String.valueOf(report.Date));
+
                 if (report.Warranty == true) {
                     rgEditRepWarranty.check(R.id.rbEditRepYes);
                 } else {
@@ -134,6 +137,7 @@ public class ReportEdit extends Activity implements AlertDialogRadio.AlertPositi
                 restService.getService().getEngineerByID(report.EngineerId, new Callback<Engineer>() {
                     @Override
                     public void success(Engineer engineer, Response response) {
+                        engId = engineer.Id;
                         tvEditRepEngName.setText(engineer.Name);
                     }
 
@@ -151,25 +155,49 @@ public class ReportEdit extends Activity implements AlertDialogRadio.AlertPositi
 
             }
         });
-        View.OnClickListener listener = new View.OnClickListener() {
+
+    }
+
+    public void onEditRepSave(View view) {
+        Report report = new Report();
+        RadioButton radioButton =
+                (RadioButton) findViewById(rgEditRepService.getCheckedRadioButtonId());
+
+
+        report.Id = repId;
+        report.CustomerId = custId;
+        report.Date = String.valueOf(etEditRepDate.getText());
+
+        if(rbEditRepNo.isChecked()){
+            report.Warranty = false;
+        }else if(rbEditRepYes.isChecked()){
+            report.Warranty = true;
+        }
+
+        report.ServiceNature = String.valueOf(radioButton.getText());
+        report.LabourCharge = Double.valueOf(etEditRepLabour.getText().toString());
+        report.TotalMaterial = Double.valueOf(etEditRepMaterial.getText().toString());
+        report.Transport = Double.valueOf(etEditRepTransport.getText().toString());
+        report.Total = Double.valueOf(etEditRepTotal.getText().toString());
+        report.Comments = String.valueOf(etEditRepComments.getText());
+        report.EngineerId = engId;
+
+        restService.getService().updateReportById(repId, report, new Callback<Report>() {
             @Override
-            public void onClick(View v) {
-                FragmentManager manager = getFragmentManager();
-                AlertDialogRadio alert = new AlertDialogRadio();
-                Bundle b = new Bundle();
-                b.putInt("position", position);
-                alert.setArguments(b);
-                alert.show(manager, "alert_dialog_radio");
+            public void success(Report report, Response response) {
+                Toast.makeText(ReportEdit.this, " Report Updated!", Toast.LENGTH_LONG).show();
             }
-        };
-        etEditRepTest.setOnClickListener(listener);
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(ReportEdit.this, "Error in report!", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
 
-
-    @Override
-    public void onPositiveClick(int position) {
-        this.position = position;
-        etEditRepTest.setText(customerName.getCustList()[this.position]);
+    public void onEditRepBack(View view) {
+        finish();
     }
 }
