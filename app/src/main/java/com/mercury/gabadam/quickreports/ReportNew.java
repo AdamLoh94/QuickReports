@@ -10,6 +10,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,23 +102,116 @@ public class ReportNew extends AppCompatActivity {
 
     }
 
+    public static boolean isValidDate(String inDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(inDate.trim());
+        } catch (ParseException pe) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isDouble(String strDouble){
+        try{
+            Double.parseDouble(strDouble);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
+
+    public static boolean checkTotal(String str1, String str2, String str3, String strTotal){
+        double db1 = Double.parseDouble(str1);
+        double db2 = Double.parseDouble(str2);
+        double db3 = Double.parseDouble(str3);
+        double dbTotal =Double.parseDouble(strTotal);
+        if((db1 + db2 + db3) == dbTotal){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     //Method to submit form
     public void onAddRepSave(View view) {
         //validations
         final String Name = etAddRepCustName.getText().toString();
+        final String Date = etAddRepDate.getText().toString();
+        final String Labour = etAddRepLabour.getText().toString();
+        final String Material = etAddRepMaterial.getText().toString();
+        final String Transport = etAddRepTransport.getText().toString();
+        final String Total = etAddRepTotal.getText().toString();
 
         //Customer name validation
-        if(Name.length()== 0){
+        if (Name.length() == 0) {
             etAddRepCustName.requestFocus();
             etAddRepCustName.setError("FIELD CANNOT BE EMPTY!!");
             return; //exit out of submit form method
-        }else if(!Name.matches("[a-zA-Z]+")){
-            etAddRepCustName.requestFocus();
-            etAddRepCustName.setError("ENTER ONLY ALPHABETICAL CHARACTER!");
+        } else if (Date.length() == 0) {
+            etAddRepDate.requestFocus();
+            etAddRepDate.setError("FIELD CANNOT BE EMPTY!!");
+            return;
+        } else if(!isValidDate(Date)){
+            etAddRepDate.requestFocus();
+            etAddRepDate.setError("Date must be in the dd/MM/yyyy format");
+            return;
+        } else if (rgAddRepWarranty.getCheckedRadioButtonId() == -1) {
+            rbAddRepYes.setError("");
+            rbAddRepNo.setError("");
+            return;
+        }else if(rgAddRepService.getCheckedRadioButtonId() == -1){
+            rbAddRepInstallation.setError("");
+            rbAddRepMaintenance.setError("");
+            rbAddRepRepair.setError("");
+            rbAddRepTerminate.setError("");
             return;
         }
-
+        //Labour
+        else if(Labour.length() == 0){
+            etAddRepLabour.requestFocus();
+            etAddRepLabour.setError("FIELD CANNOT BE EMPTY!!");
+            return;
+        }else if(!isDouble(Labour)){
+            etAddRepLabour.requestFocus();
+            etAddRepLabour.setError("Cost must be in double format(e.g. 11.00)");
+            return;
+        }
+        //Material
+        else if(Material.length() == 0){
+            etAddRepMaterial.requestFocus();
+            etAddRepMaterial.setError("FIELD CANNOT BE EMPTY!!");
+            return;
+        }else if(!isDouble(Material)){
+            etAddRepMaterial.requestFocus();
+            etAddRepMaterial.setError("Cost must be in double format(e.g. 11.00)");
+            return;
+        }
+        //Transport
+        else if(Transport.length() == 0){
+            etAddRepTransport.requestFocus();
+            etAddRepTransport.setError("FIELD CANNOT BE EMPTY!!");
+            return;
+        }else if(!isDouble(Transport)){
+            etAddRepTransport.requestFocus();
+            etAddRepTransport.setError("Cost must be in double format(e.g. 11.00)");
+            return;
+        }
+        //Total
+        else if(Total.length() == 0){
+            etAddRepTotal.requestFocus();
+            etAddRepTotal.setError("FIELD CANNOT BE EMPTY!!");
+            return;
+        }else if(!isDouble(Total)){
+            etAddRepTotal.requestFocus();
+            etAddRepTotal.setError("Cost must be in double format(e.g. 11.00)");
+            return;
+        }else if(!checkTotal(Labour, Material, Transport, Total)){
+            etAddRepTotal.requestFocus();
+            etAddRepTotal.setError("Please re-check total amount!");
+        }
 
         Report report = new Report();
         RadioButton radioButton =
@@ -135,12 +230,11 @@ public class ReportNew extends AppCompatActivity {
             }
         }
 
-        if(checkExist == false){
+        if (checkExist == false) {
             Toast.makeText(ReportNew.this, "Customer does not exist!",
                     Toast.LENGTH_LONG).show();
             return;
         }
-
 
 
         report.Date = String.valueOf(etAddRepDate.getText());
