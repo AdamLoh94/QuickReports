@@ -170,6 +170,7 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
                     public void success(Engineer engineer, Response response)
                     {
                         Toast.makeText(Detail.this, "New Engineer Inserted.", Toast.LENGTH_LONG).show();
+                        btnSave.setEnabled(false);
                     }
 
                     @Override
@@ -186,6 +187,7 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
                     @Override
                     public void success(Engineer engineer, Response response) {
                         Toast.makeText(Detail.this, "Engineer Record updated.", Toast.LENGTH_LONG).show();
+                        btnSave.setEnabled(false);
                     }
 
                     @Override

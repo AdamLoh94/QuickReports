@@ -198,6 +198,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
                     public void success(Customer customer, Response response)
                     {
                         Toast.makeText(CustomerDetailsActivity.this, "New Customer Inserted.", Toast.LENGTH_LONG).show();
+                        btnSave.setEnabled(false);
                     }
 
                     @Override
@@ -216,6 +217,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
                     public void success(Customer customer, Response response)
                     {
                         Toast.makeText(CustomerDetailsActivity.this, "Customer Record updated.", Toast.LENGTH_LONG).show();
+                        btnSave.setEnabled(false);
                     }
 
                     @Override
