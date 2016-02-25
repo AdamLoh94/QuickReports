@@ -348,14 +348,13 @@
         android:layout_alignParentEnd="true"
         android:onClick="onEditRepSave"/>
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="New Text"
-        android:id="@+id/tvEditRepCustName"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:id="@+id/etEditRepCustName"
+        android:ems="10"
         android:layout_below="@+id/tvEditRepId"
-        android:layout_alignStart="@+id/etEditRepDate" />
+        android:layout_alignEnd="@+id/btnEditRepSave" />
 
 </RelativeLayout>
 </ScrollView>

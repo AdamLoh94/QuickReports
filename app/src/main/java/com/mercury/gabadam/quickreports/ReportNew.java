@@ -39,8 +39,7 @@ public class ReportNew extends AppCompatActivity {
     RestService restService;
     UserSessionManager session;
 
-    List<Customer> custList;
-    ArrayList<String> custName;
+    private static List<Customer> custList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,14 +82,10 @@ public class ReportNew extends AppCompatActivity {
             }
         });
 
-        custName = new ArrayList<>();
         restService.getService().getCustomer(new Callback<List<Customer>>() {
             @Override
             public void success(List<Customer> customers, Response response) {
                 custList = customers;
-                for (Customer c : customers) {
-                    custName.add(c.Name);
-                }
             }
 
             @Override
@@ -211,6 +206,7 @@ public class ReportNew extends AppCompatActivity {
         }else if(!checkTotal(Labour, Material, Transport, Total)){
             etAddRepTotal.requestFocus();
             etAddRepTotal.setError("Please re-check total amount!");
+            return;
         }
 
         Report report = new Report();
