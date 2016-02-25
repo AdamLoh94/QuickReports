@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit.Callback;
@@ -115,6 +116,14 @@ public class CustomerMainActivity extends AppCompatActivity implements android.v
         @Override
         public void success(List<Customer> customers, Response response) {
             ListView lv = (ListView) findViewById(R.id.listViewCustomer);
+            if (customers.size() > 0) {
+                Collections.sort(customers, new Comparator<Customer>() {
+                    @Override
+                    public int compare(final Customer object1, final Customer object2) {
+                        return String.valueOf(object1.Name).compareTo(String.valueOf(object2.Name));
+                    }
+                } );
+            }
             CustomerCustomAdapter customerCustomAdapter = new CustomerCustomAdapter(CustomerMainActivity.this, R.layout.view_customer, customers);
             lv.setAdapter(customerCustomAdapter);
 
