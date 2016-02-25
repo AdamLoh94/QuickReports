@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Collections;
 import java.util.List;
 
 import retrofit.Callback;
@@ -114,7 +115,6 @@ public class CustomerMainActivity extends AppCompatActivity implements android.v
         @Override
         public void success(List<Customer> customers, Response response) {
             ListView lv = (ListView) findViewById(R.id.listViewCustomer);
-
             CustomerCustomAdapter customerCustomAdapter = new CustomerCustomAdapter(CustomerMainActivity.this, R.layout.view_customer, customers);
             lv.setAdapter(customerCustomAdapter);
 
