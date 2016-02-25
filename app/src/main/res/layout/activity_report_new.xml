@@ -306,7 +306,8 @@
             android:id="@+id/btnAddRepBack"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:onClick="onAddRepBack"/>
+            android:onClick="onAddRepBack"
+            android:textColor="#ff0000" />
 
         <Button
             android:layout_width="wrap_content"
@@ -315,7 +316,8 @@
             android:id="@+id/btnAddRepSave"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:onClick="onAddRepSave"/>
+            android:onClick="onAddRepSave"
+            android:textColor="#006400" />
 
         <EditText
             android:layout_width="wrap_content"

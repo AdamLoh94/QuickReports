@@ -22,7 +22,8 @@
             android:id="@+id/btnViewAllRepBack"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:onClick="onViewAllRepBackClick"/>
+            android:onClick="onViewAllRepBackClick"
+            android:textColor="#ff0000" />
 
         <Button
             android:layout_width="wrap_content"

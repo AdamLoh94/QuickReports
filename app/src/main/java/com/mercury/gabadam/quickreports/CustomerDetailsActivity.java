@@ -141,6 +141,15 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
         return super.onOptionsItemSelected(item);
     }
 
+    public static boolean isInteger(String strInteger){
+        try{
+            Integer.parseInt(strInteger);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
+
     @Override
     public void onClick(View v)
     {
@@ -150,6 +159,71 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
         }
         else if (v == btnSave)
         {
+
+            //validations Initialization
+            final String CustID = editTextCustID.getText().toString();
+            final String Name = editTextName.getText().toString();
+            final String Contact = editTextContact.getText().toString();
+            final String CustAddress = editTextAddress.getText().toString();
+            final String EngName = editTextEngName.getText().toString();
+
+            //Validation CustID
+            if (CustID.length() == 0) {
+                editTextCustID.requestFocus();
+                editTextCustID.setError("FIELD CANNOT BE EMPTY!!");
+                return; //exit out of submit form method
+            }
+            else if(!isInteger(CustID)){
+                editTextCustID.requestFocus();
+                editTextCustID.setError("Customer ID must be in Integer format(e.g. 1 or 2, etc.)");
+                return;
+            }
+            //Validate Name
+            if (Name.length() == 0)
+            {
+                editTextName.requestFocus();
+                editTextName.setError("FIELD CANNOT BE EMPTY!!");
+                return; //exit out of submit form method
+            }
+            //Validate Contact
+            if (Contact.length() == 0) {
+                editTextContact.requestFocus();
+                editTextContact.setError("FIELD CANNOT BE EMPTY!!");
+                return; //exit out of submit form method
+            }
+            else if(!isInteger(Contact)){
+                editTextContact.requestFocus();
+                editTextContact.setError("Contact must be in Integer format(e.g. 11, 1, 2)");
+                return;
+            }
+            else if(Contact.length() != 8)
+            {
+                editTextContact.requestFocus();
+                editTextContact.setError("Contact must 8 characters");
+                return;
+            }
+            //Validate Customer Address
+            if (CustAddress.length() == 0)
+            {
+                editTextAddress.requestFocus();
+                editTextAddress.setError("FIELD CANNOT BE EMPTY!!");
+                return; //exit out of submit form method
+            }
+            //Validate Engineer Name
+            if (EngName.length() == 0)
+            {
+                editTextEngName.requestFocus();
+                editTextEngName.setError("FIELD CANNOT BE EMPTY!!");
+                return; //exit out of submit form method
+            }
+            if(activeRG.getCheckedRadioButtonId() == -1)
+            {
+                rbTrue.setError("");
+                rbFalse.setError("");
+                return;
+            }
+
+
 
             Customer customer = new Customer();
             Integer status = 0;

@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background"
     tools:context="com.mercury.gabadam.quickreports.MainActivity">
 
     <ListView
@@ -24,7 +25,8 @@
         android:text="Get All"
         android:id="@+id/btnGetAll"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="#009dff"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -32,7 +34,8 @@
         android:text="Add Engineer"
         android:id="@+id/btnAdd"
         android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/btnGetAll" />
+        android:layout_toEndOf="@+id/btnGetAll"
+        android:textColor="#009dff" />
 
     <Button
         android:layout_width="wrap_content"
@@ -40,6 +43,7 @@
         android:text="Back"
         android:id="@+id/btnBack"
         android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/btnAdd" />
+        android:layout_toEndOf="@+id/btnAdd"
+        android:textColor="#009dff" />
 
 </RelativeLayout>

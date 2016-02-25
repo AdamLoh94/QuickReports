@@ -2,6 +2,7 @@ package com.mercury.gabadam.quickreports;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.security.keystore.UserNotAuthenticatedException;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -132,6 +133,61 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
         }
         else if (findViewById(R.id.btnSave) == v)
         {
+            //validations
+            final String ID = editTextId.getText().toString();
+            final String Name = editTextName.getText().toString();
+            final String Username = editTextUsername.getText().toString();
+            final String Pw = editTextPw.getText().toString();
+            final String Email = editTextEmail.getText().toString();
+            final String HP = editTextHP.getText().toString();
+
+            //Validation ID
+            if (ID.length() == 0) {
+                editTextId.requestFocus();
+                editTextId.setError("FIELD CANNOT BE EMPTY!!");
+                return; //exit out of submit form method
+            }
+            //Validation Name
+            if (Name.length() == 0) {
+                editTextName.requestFocus();
+                editTextName.setError("FIELD CANNOT BE EMPTY!!");
+                return; //exit out of submit form method
+            }
+            //Validation Username
+            if (Username.length() == 0) {
+                editTextUsername.requestFocus();
+                editTextUsername.setError("FIELD CANNOT BE EMPTY!!");
+                return; //exit out of submit form method
+            }
+            //Validation PW
+            if (Pw.length() == 0) {
+                editTextPw.requestFocus();
+                editTextPw.setError("FIELD CANNOT BE EMPTY!!");
+                return; //exit out of submit form method
+            }
+            //Validation Email
+            if (Email.length() == 0) {
+                editTextEmail.requestFocus();
+                editTextEmail.setError("FIELD CANNOT BE EMPTY!!");
+                return; //exit out of submit form method
+            }
+            //Validation HP
+            if (HP.length() == 0) {
+                editTextHP.requestFocus();
+                editTextHP.setError("FIELD CANNOT BE EMPTY!!");
+                return; //exit out of submit form method
+            }
+            if(engAdminRG.getCheckedRadioButtonId() == -1)
+            {
+                adminTrue.setError("");
+                adminFalse.setError("");
+                return;
+            }
+            if(engActiveRG.getCheckedRadioButtonId() == -1)
+            {
+                engActiveTrue.setError("");
+                engActiveFalse.setError("");
+            }
 
             Engineer engineer = new Engineer();
             Integer status = 0;

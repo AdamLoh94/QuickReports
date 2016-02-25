@@ -148,7 +148,8 @@
         android:text="Save"
         android:id="@+id/btnSave"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/btnClose" />
+        android:layout_toLeftOf="@+id/btnClose"
+        android:textColor="#006400" />
 
     <Button
         android:layout_width="wrap_content"
@@ -156,7 +157,8 @@
         android:text="Close"
         android:id="@+id/btnClose"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textColor="#ff0004" />
 
     <RadioGroup
         android:layout_width="match_parent"

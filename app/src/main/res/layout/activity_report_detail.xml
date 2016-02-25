@@ -332,6 +332,7 @@
         android:layout_alignBottom="@+id/btnRepEdit"
         android:layout_alignParentStart="true"
         android:layout_marginStart="29dp"
-        android:onClick="backViewReport"/>
+        android:onClick="backViewReport"
+        android:textColor="#ff0000" />
 
 </RelativeLayout>

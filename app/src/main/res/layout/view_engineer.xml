@@ -7,7 +7,9 @@
     <TextView
         android:id="@+id/engineer_Id"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="#009dff"
+        android:background="#000000" />
 
     <TextView
         android:id="@+id/engineer_name"
@@ -16,6 +18,8 @@
         android:paddingLeft="6dip"
         android:paddingTop="6dip"
         android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="#009dff"
+        android:background="#000000" />
 
 </LinearLayout>
