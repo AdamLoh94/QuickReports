@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.CalendarView;
 import android.widget.Toast;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -41,10 +43,11 @@ import retrofit.client.Response;
  */
 public class ReportEdit extends AppCompatActivity {
 
-    TextView tvEditRepId, tvEditRepEngName;
+    AutoCompleteTextView actEditRepCustName;
 
-    EditText etEditRepCustName, etEditRepDate, etEditRepLabour, etEditRepMaterial, etEditRepTransport,
-            etEditRepTotal, etEditRepComments;
+    TextView tvEditRepId, tvEditRepEngName, tvEditRepTotal, tvEditRepDate;
+
+    EditText etEditRepLabour, etEditRepMaterial, etEditRepTransport, etEditRepComments;
 
     RadioButton rbEditRepYes, rbEditRepNo, rbEditRepInstallation,
             rbEditRepRepair, rbEditRepMaintenance, rbEditRepTerminate;
@@ -54,6 +57,7 @@ public class ReportEdit extends AppCompatActivity {
     Button btnEditRepSave;
 
     private static List<Customer> custList;
+    private static List<String> custNames = new ArrayList<>();
 
     private int _Report_Id = 0;
     RestService restService;
@@ -69,15 +73,15 @@ public class ReportEdit extends AppCompatActivity {
         restService = new RestService();
         session = new UserSessionManager(getApplicationContext());
 
+        actEditRepCustName = (AutoCompleteTextView) findViewById(R.id.actEditRepCustName);
+
+        tvEditRepTotal = (TextView) findViewById(R.id.tvEditRapTotal);
         tvEditRepId = (TextView) findViewById(R.id.tvEditRepId);
         tvEditRepEngName = (TextView) findViewById(R.id.tvEditRepEngName);
-
-        etEditRepCustName = (EditText) findViewById(R.id.etEditRepCustName);
-        etEditRepDate = (EditText) findViewById(R.id.etEditRepDate);
+        tvEditRepDate = (TextView) findViewById(R.id.tvEditRepDate);
         etEditRepLabour = (EditText) findViewById(R.id.etEditRepLabour);
         etEditRepMaterial = (EditText) findViewById(R.id.etEditRepMaterial);
         etEditRepTransport = (EditText) findViewById(R.id.etEditRepTransport);
-        etEditRepTotal = (EditText) findViewById(R.id.etEditRepTotal);
         etEditRepComments = (EditText) findViewById(R.id.etEditRepComments);
 
 
@@ -96,12 +100,49 @@ public class ReportEdit extends AppCompatActivity {
         restService.getService().getCustomer(new Callback<List<Customer>>() {
             @Override
             public void success(List<Customer> customers, Response response) {
+                for (Customer c : customers) {
+                    custNames.add(c.Name);
+                }
                 custList = customers;
             }
 
             @Override
             public void failure(RetrofitError error) {
 
+            }
+        });
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+                android.R.layout.simple_list_item_1, custNames);
+        actEditRepCustName.setAdapter(adapter);
+
+        rgEditRepWarranty.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.rbEditRepYes){
+                    etEditRepLabour.setText("0");
+                    etEditRepLabour.setEnabled(false);
+                    etEditRepLabour.setFocusableInTouchMode(false);
+                    etEditRepLabour.clearFocus();
+
+                    etEditRepMaterial.setText("0");
+                    etEditRepMaterial.setEnabled(false);
+                    etEditRepMaterial.setFocusableInTouchMode(false);
+                    etEditRepMaterial.clearFocus();
+
+                    etEditRepTransport.setText("0");
+                    etEditRepTransport.setEnabled(false);
+                    etEditRepTransport.setFocusableInTouchMode(false);
+                    etEditRepTransport.clearFocus();
+                }else{
+                    etEditRepLabour.setEnabled(true);
+                    etEditRepLabour.setFocusableInTouchMode(true);
+
+                    etEditRepMaterial.setEnabled(true);
+                    etEditRepMaterial.setFocusableInTouchMode(true);
+
+                    etEditRepTransport.setEnabled(true);
+                    etEditRepTransport.setFocusableInTouchMode(true);
+                }
             }
         });
 
@@ -118,7 +159,7 @@ public class ReportEdit extends AppCompatActivity {
                 restService.getService().getCustomerByID(report.CustomerId, new Callback<Customer>() {
                     @Override
                     public void success(Customer customer, Response response) {
-                        etEditRepCustName.setText(String.valueOf(customer.Name));
+                        actEditRepCustName.setText(String.valueOf(customer.Name));
                     }
 
                     @Override
@@ -127,7 +168,7 @@ public class ReportEdit extends AppCompatActivity {
                     }
                 });
 
-                etEditRepDate.setText(String.valueOf(report.Date));
+                tvEditRepDate.setText(String.valueOf(report.Date));
 
                 if (report.Warranty == true) {
                     rgEditRepWarranty.check(R.id.rbEditRepYes);
@@ -148,7 +189,7 @@ public class ReportEdit extends AppCompatActivity {
                 etEditRepLabour.setText(String.valueOf(report.LabourCharge));
                 etEditRepMaterial.setText(String.valueOf(report.TotalMaterial));
                 etEditRepTransport.setText(String.valueOf(report.Transport));
-                etEditRepTotal.setText(String.valueOf(report.Total));
+                tvEditRepTotal.setText(String.valueOf(report.Total));
 
                 etEditRepComments.setText(report.Comments);
                 restService.getService().getEngineerByID(report.EngineerId, new Callback<Engineer>() {
@@ -195,40 +236,25 @@ public class ReportEdit extends AppCompatActivity {
         }
     }
 
-    public static boolean checkTotal(String str1, String str2, String str3, String strTotal){
+    public static Double addTotal(String str1, String str2, String str3){
         double db1 = Double.parseDouble(str1);
         double db2 = Double.parseDouble(str2);
         double db3 = Double.parseDouble(str3);
-        double dbTotal =Double.parseDouble(strTotal);
-        if((db1 + db2 + db3) == dbTotal){
-            return true;
-        }
-        else{
-            return false;
-        }
+        double dbTotal = db1 + db2 + db3;
+        return dbTotal;
     }
 
     public void onEditRepSave(View view) {
-        final String Name = etEditRepCustName.getText().toString();
-        final String Date = etEditRepDate.getText().toString();
+        final String Name = actEditRepCustName.getText().toString();
         final String Labour = etEditRepLabour.getText().toString();
         final String Material = etEditRepMaterial.getText().toString();
         final String Transport = etEditRepTransport.getText().toString();
-        final String Total = etEditRepTotal.getText().toString();
 
         //Customer name validation
         if (Name.length() == 0) {
-            etEditRepCustName.requestFocus();
-            etEditRepCustName.setError("FIELD CANNOT BE EMPTY!!");
+            actEditRepCustName.requestFocus();
+            actEditRepCustName.setError("FIELD CANNOT BE EMPTY!!");
             return; //exit out of submit form method
-        } else if (Date.length() == 0) {
-            etEditRepDate.requestFocus();
-            etEditRepDate.setError("FIELD CANNOT BE EMPTY!!");
-            return;
-        } else if(!isValidDate(Date)){
-            etEditRepDate.requestFocus();
-            etEditRepDate.setError("Date must be in the dd/MM/yyyy format");
-            return;
         } else if (rgEditRepWarranty.getCheckedRadioButtonId() == -1) {
             rbEditRepYes.setError("");
             rbEditRepNo.setError("");
@@ -270,20 +296,7 @@ public class ReportEdit extends AppCompatActivity {
             etEditRepTransport.setError("Cost must be in double format(e.g. 11.00)");
             return;
         }
-        //Total
-        else if(Total.length() == 0){
-            etEditRepTotal.requestFocus();
-            etEditRepTotal.setError("FIELD CANNOT BE EMPTY!!");
-            return;
-        }else if(!isDouble(Total)){
-            etEditRepTotal.requestFocus();
-            etEditRepTotal.setError("Cost must be in double format(e.g. 11.00)");
-            return;
-        }else if(!checkTotal(Labour, Material, Transport, Total)){
-            etEditRepTotal.requestFocus();
-            etEditRepTotal.setError("Please re-check total amount!");
-            return;
-        }
+
         Report report = new Report();
         RadioButton radioButton =
                 (RadioButton) findViewById(rgEditRepService.getCheckedRadioButtonId());
@@ -292,7 +305,7 @@ public class ReportEdit extends AppCompatActivity {
         //check customer exist
         loop1:
         for (Customer c : custList) {
-            if (c.Name.equals(etEditRepCustName.getText().toString())) {
+            if (c.Name.equals(actEditRepCustName.getText().toString())) {
                 report.CustomerId = c.CustomerId;
                 Toast.makeText(ReportEdit.this, "Customer is available!",
                         Toast.LENGTH_LONG).show();
@@ -309,7 +322,7 @@ public class ReportEdit extends AppCompatActivity {
 
 
         report.Id = repId;
-        report.Date = String.valueOf(etEditRepDate.getText());
+        report.Date = tvEditRepDate.getText().toString();
 
         if(rbEditRepNo.isChecked()){
             report.Warranty = false;
@@ -317,11 +330,13 @@ public class ReportEdit extends AppCompatActivity {
             report.Warranty = true;
         }
 
+        tvEditRepTotal.setText(String.valueOf(addTotal(Labour, Material, Transport)));
+
         report.ServiceNature = String.valueOf(radioButton.getText());
         report.LabourCharge = Double.valueOf(etEditRepLabour.getText().toString());
         report.TotalMaterial = Double.valueOf(etEditRepMaterial.getText().toString());
         report.Transport = Double.valueOf(etEditRepTransport.getText().toString());
-        report.Total = Double.valueOf(etEditRepTotal.getText().toString());
+        report.Total = Double.valueOf(tvEditRepTotal.getText().toString());
         report.Comments = String.valueOf(etEditRepComments.getText());
         report.EngineerId = engId;
 

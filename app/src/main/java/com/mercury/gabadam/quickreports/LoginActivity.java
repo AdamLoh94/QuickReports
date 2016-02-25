@@ -95,5 +95,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onExitClick(View view) {
+        finish();
+        System.exit(0);
+    }
 }
 

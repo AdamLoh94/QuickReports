@@ -26,7 +26,9 @@
         </activity>
         -->
 
-        <activity android:name="com.mercury.gabadam.quickreports.HomeActivity">
+        <activity
+            android:name="com.mercury.gabadam.quickreports.HomeActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.mercury.gabadam.quickreports.HomeActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -38,16 +40,36 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.mercury.gabadam.quickreports.MainActivity" />
-        <activity android:name="com.mercury.gabadam.quickreports.Detail" />
-        <activity android:name="com.mercury.gabadam.quickreports.ReportMainActivity" />
-        <activity android:name="com.mercury.gabadam.quickreports.ReportDetail" />
-        <activity android:name="com.mercury.gabadam.quickreports.CustomerMainActivity" />
-        <activity android:name="com.mercury.gabadam.quickreports.CustomerDetailsActivity" />
-        <activity android:name="com.mercury.gabadam.quickreports.LoginActivity" />
-        <activity android:name="com.mercury.gabadam.quickreports.ReportViewAllActivity"></activity>
-        <activity android:name="com.mercury.gabadam.quickreports.ReportEdit"></activity>
-        <activity android:name="com.mercury.gabadam.quickreports.ReportNew"></activity>
+        <activity
+            android:name="com.mercury.gabadam.quickreports.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.mercury.gabadam.quickreports.Detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.mercury.gabadam.quickreports.ReportMainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.mercury.gabadam.quickreports.ReportDetail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.mercury.gabadam.quickreports.CustomerMainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.mercury.gabadam.quickreports.CustomerDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.mercury.gabadam.quickreports.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.mercury.gabadam.quickreports.ReportViewAllActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.mercury.gabadam.quickreports.ReportEdit"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="com.mercury.gabadam.quickreports.ReportNew"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

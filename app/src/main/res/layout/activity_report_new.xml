@@ -166,23 +166,15 @@
 
         </TableLayout>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/etAddRepDate"
-            android:ems="10"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="55dp"
-            android:inputType="date"/>
-
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/rgAddRepWarranty"
             android:layout_column="0"
-            android:layout_below="@+id/etAddRepDate"
-            android:layout_alignStart="@+id/etAddRepDate">
+            android:layout_marginTop="91dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/etAddRepLabour">
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -277,18 +269,11 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/etAddRepTotal"
-            android:ems="10"
-            android:layout_below="@+id/etAddRepTransport"
-            android:layout_alignParentEnd="true" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/etAddRepComments"
             android:ems="10"
-            android:layout_below="@+id/etAddRepTotal"
-            android:layout_alignStart="@+id/etAddRepTotal" />
+            android:layout_below="@+id/etAddRepTransport"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="40dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -296,8 +281,8 @@
             android:text="New Text"
             android:id="@+id/tvAddRepEngName"
             android:gravity="center"
-            android:layout_below="@+id/etAddRepComments"
-            android:layout_alignStart="@+id/etAddRepTotal" />
+            android:layout_alignBottom="@+id/tableLayout"
+            android:layout_alignStart="@+id/etAddRepComments" />
 
         <Button
             android:layout_width="wrap_content"
@@ -319,14 +304,31 @@
             android:onClick="onAddRepSave"
             android:textColor="#006400" />
 
-        <EditText
+        <AutoCompleteTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/etAddRepCustName"
+            android:id="@+id/actAddRepCustName"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/etAddRepDate"
-            android:ems="10"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignStart="@+id/rgAddRepWarranty"
+            android:layout_alignEnd="@+id/btnAddRepSave" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="New Text"
+            android:id="@+id/tvAddRepDate"
+            android:gravity="center"
+            android:layout_below="@+id/actAddRepCustName"
+            android:layout_alignStart="@+id/rgAddRepWarranty" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:text="New Text"
+            android:id="@+id/tvAddRepTotal"
+            android:layout_below="@+id/etAddRepTransport"
+            android:layout_alignStart="@+id/etAddRepComments"
+            android:gravity="center" />
 
     </RelativeLayout>
 </ScrollView>

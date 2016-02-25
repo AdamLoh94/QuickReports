@@ -3,16 +3,19 @@ package com.mercury.gabadam.quickreports;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit.Callback;
@@ -24,10 +27,11 @@ import retrofit.client.Response;
  */
 public class ReportNew extends AppCompatActivity {
 
-    TextView tvAddRepEngName;
+    AutoCompleteTextView actAddRepCustName;
 
-    EditText etAddRepDate, etAddRepLabour, etAddRepMaterial, etAddRepTransport,
-            etAddRepTotal, etAddRepComments, etAddRepCustName;
+    TextView tvAddRepTotal, tvAddRepEngName, tvAddRepDate;
+
+    EditText etAddRepLabour, etAddRepMaterial, etAddRepTransport, etAddRepComments;
 
     RadioButton rbAddRepYes, rbAddRepNo, rbAddRepInstallation,
             rbAddRepRepair, rbAddRepMaintenance, rbAddRepTerminate;
@@ -36,10 +40,15 @@ public class ReportNew extends AppCompatActivity {
 
     Button btnAddRepSave;
 
+    Date date = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    String nowDate = sdf.format(date);
+
     RestService restService;
     UserSessionManager session;
 
     private static List<Customer> custList;
+    private static List<String> custNames = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +57,16 @@ public class ReportNew extends AppCompatActivity {
         restService = new RestService();
         session = new UserSessionManager(getApplicationContext());
 
-        tvAddRepEngName = (TextView) findViewById(R.id.tvAddRepEngName);
+        actAddRepCustName = (AutoCompleteTextView) findViewById(R.id.actAddRepCustName);
 
-        etAddRepDate = (EditText) findViewById(R.id.etAddRepDate);
+        tvAddRepEngName = (TextView) findViewById(R.id.tvAddRepEngName);
+        tvAddRepTotal = (TextView) findViewById(R.id.tvAddRepTotal);
+        tvAddRepDate = (TextView) findViewById(R.id.tvAddRepDate);
+
         etAddRepLabour = (EditText) findViewById(R.id.etAddRepLabour);
         etAddRepMaterial = (EditText) findViewById(R.id.etAddRepMaterial);
         etAddRepTransport = (EditText) findViewById(R.id.etAddRepTransport);
-        etAddRepTotal = (EditText) findViewById(R.id.etAddRepTotal);
         etAddRepComments = (EditText) findViewById(R.id.etAddRepComments);
-        etAddRepCustName = (EditText) findViewById(R.id.etAddRepCustName);
 
         rbAddRepYes = (RadioButton) findViewById(R.id.rbAddRepYes);
         rbAddRepNo = (RadioButton) findViewById(R.id.rbAddRepNo);
@@ -82,9 +92,13 @@ public class ReportNew extends AppCompatActivity {
             }
         });
 
+
         restService.getService().getCustomer(new Callback<List<Customer>>() {
             @Override
             public void success(List<Customer> customers, Response response) {
+                for (Customer c : customers) {
+                    custNames.add(c.Name);
+                }
                 custList = customers;
             }
 
@@ -93,20 +107,46 @@ public class ReportNew extends AppCompatActivity {
 
             }
         });
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+                android.R.layout.simple_list_item_1, custNames);
+        actAddRepCustName.setAdapter(adapter);
+        tvAddRepDate.setText(nowDate);
+        tvAddRepTotal.setText("0");
 
+        rgAddRepWarranty.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.rbAddRepYes){
+                    etAddRepLabour.setText("0");
+                    etAddRepLabour.setEnabled(false);
+                    etAddRepLabour.setFocusableInTouchMode(false);
+                    etAddRepLabour.clearFocus();
 
+                    etAddRepMaterial.setText("0");
+                    etAddRepMaterial.setEnabled(false);
+                    etAddRepMaterial.setFocusableInTouchMode(false);
+                    etAddRepMaterial.clearFocus();
+
+                    etAddRepTransport.setText("0");
+                    etAddRepTransport.setEnabled(false);
+                    etAddRepTransport.setFocusableInTouchMode(false);
+                    etAddRepTransport.clearFocus();
+                }
+                else{
+                    etAddRepLabour.setEnabled(true);
+                    etAddRepLabour.setFocusableInTouchMode(true);
+
+                    etAddRepMaterial.setEnabled(true);
+                    etAddRepMaterial.setFocusableInTouchMode(true);
+
+                    etAddRepTransport.setEnabled(true);
+                    etAddRepTransport.setFocusableInTouchMode(true);
+                }
+            }
+        });
     }
 
-    public static boolean isValidDate(String inDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        dateFormat.setLenient(false);
-        try {
-            dateFormat.parse(inDate.trim());
-        } catch (ParseException pe) {
-            return false;
-        }
-        return true;
-    }
+
 
     public static boolean isDouble(String strDouble){
         try{
@@ -117,42 +157,27 @@ public class ReportNew extends AppCompatActivity {
         }
     }
 
-    public static boolean checkTotal(String str1, String str2, String str3, String strTotal){
+    public static Double addTotal(String str1, String str2, String str3){
         double db1 = Double.parseDouble(str1);
         double db2 = Double.parseDouble(str2);
         double db3 = Double.parseDouble(str3);
-        double dbTotal =Double.parseDouble(strTotal);
-        if((db1 + db2 + db3) == dbTotal){
-            return true;
-        }
-        else{
-            return false;
-        }
+        double dbTotal = db1 + db2 + db3;
+        return dbTotal;
     }
 
     //Method to submit form
     public void onAddRepSave(View view) {
         //validations
-        final String Name = etAddRepCustName.getText().toString();
-        final String Date = etAddRepDate.getText().toString();
+        final String Name = actAddRepCustName.getText().toString();
         final String Labour = etAddRepLabour.getText().toString();
         final String Material = etAddRepMaterial.getText().toString();
         final String Transport = etAddRepTransport.getText().toString();
-        final String Total = etAddRepTotal.getText().toString();
 
         //Customer name validation
         if (Name.length() == 0) {
-            etAddRepCustName.requestFocus();
-            etAddRepCustName.setError("FIELD CANNOT BE EMPTY!!");
+            actAddRepCustName.requestFocus();
+            actAddRepCustName.setError("FIELD CANNOT BE EMPTY!!");
             return; //exit out of submit form method
-        } else if (Date.length() == 0) {
-            etAddRepDate.requestFocus();
-            etAddRepDate.setError("FIELD CANNOT BE EMPTY!!");
-            return;
-        } else if(!isValidDate(Date)){
-            etAddRepDate.requestFocus();
-            etAddRepDate.setError("Date must be in the dd/MM/yyyy format");
-            return;
         } else if (rgAddRepWarranty.getCheckedRadioButtonId() == -1) {
             rbAddRepYes.setError("");
             rbAddRepNo.setError("");
@@ -194,20 +219,8 @@ public class ReportNew extends AppCompatActivity {
             etAddRepTransport.setError("Cost must be in double format(e.g. 11.00)");
             return;
         }
-        //Total
-        else if(Total.length() == 0){
-            etAddRepTotal.requestFocus();
-            etAddRepTotal.setError("FIELD CANNOT BE EMPTY!!");
-            return;
-        }else if(!isDouble(Total)){
-            etAddRepTotal.requestFocus();
-            etAddRepTotal.setError("Cost must be in double format(e.g. 11.00)");
-            return;
-        }else if(!checkTotal(Labour, Material, Transport, Total)){
-            etAddRepTotal.requestFocus();
-            etAddRepTotal.setError("Please re-check total amount!");
-            return;
-        }
+
+
 
         Report report = new Report();
         RadioButton radioButton =
@@ -217,7 +230,7 @@ public class ReportNew extends AppCompatActivity {
         //check customer exist
         loop1:
         for (Customer c : custList) {
-            if (c.Name.equals(etAddRepCustName.getText().toString())) {
+            if (c.Name.equals(actAddRepCustName.getText().toString())) {
                 report.CustomerId = c.CustomerId;
                 Toast.makeText(ReportNew.this, "Customer successfully added!",
                         Toast.LENGTH_LONG).show();
@@ -233,7 +246,7 @@ public class ReportNew extends AppCompatActivity {
         }
 
 
-        report.Date = String.valueOf(etAddRepDate.getText());
+        report.Date = String.valueOf(tvAddRepDate.getText());
 
         if (rbAddRepNo.isChecked()) {
             report.Warranty = false;
@@ -245,7 +258,8 @@ public class ReportNew extends AppCompatActivity {
         report.LabourCharge = Double.valueOf(etAddRepLabour.getText().toString());
         report.TotalMaterial = Double.valueOf(etAddRepMaterial.getText().toString());
         report.Transport = Double.valueOf(etAddRepTransport.getText().toString());
-        report.Total = Double.valueOf(etAddRepTotal.getText().toString());
+        report.Total = addTotal(Labour, Material, Transport);
+        tvAddRepTotal.setText(String.valueOf(addTotal(Labour, Material, Transport)));
         report.Comments = String.valueOf(etAddRepComments.getText());
         report.EngineerId = session.getUserId();
 
