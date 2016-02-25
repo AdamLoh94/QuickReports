@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
                 editTextPw = (EditText) findViewById(R.id.editTextPw);
                 String pw = editTextPw.getText().toString();
 
-                for (Engineer a : engineers)
+                loop1:for (Engineer a : engineers)
                 {
                     if (id.equals(a.Username))
                     {
@@ -52,24 +52,38 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             if(a.Admin)
                             {
-                                Toast.makeText(LoginActivity.this, "Redirecting..", Toast.LENGTH_SHORT).show();
-                                session.createUserLoginSession(a.Id, a.Username);
-                                Intent intent = new Intent("com.mercury.gabadam.quickreports.HomeActivity");
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                // Add new Flag to start new Activity
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
+                                if(a.Active)
+                                {
+                                    Toast.makeText(LoginActivity.this, "Redirecting..", Toast.LENGTH_SHORT).show();
+                                    session.createUserLoginSession(a.Id, a.Username);
+                                    Intent intent = new Intent("com.mercury.gabadam.quickreports.HomeActivity");
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    // Add new Flag to start new Activity
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                                else
+                                {
+                                    Toast.makeText(LoginActivity.this, "User is not Active", Toast.LENGTH_SHORT).show();
+                                    break loop1;
+                                }
                             }
                             else
                             {
                                 Toast.makeText(LoginActivity.this, "User is not an Admin", Toast.LENGTH_SHORT).show();
+                                break loop1;
                             }
                         }
                         else
                         {
                             Toast.makeText(LoginActivity.this, "Wrong Username or Password", Toast.LENGTH_SHORT).show();
+                            break loop1;
                         }
+                    }
+                    else
+                    {
+
                     }
                 }
             }

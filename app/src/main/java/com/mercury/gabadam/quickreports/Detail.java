@@ -14,6 +14,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -21,12 +25,21 @@ import retrofit.client.Response;
 public class Detail extends AppCompatActivity implements android.view.View.OnClickListener {
 
     Button btnSave, btnClose;
+
     TextView tvID;
+
     EditText editTextId, editTextName, editTextUsername, editTextPw, editTextEmail, editTextHP;
+
     RadioButton engActiveTrue, engActiveFalse, adminTrue, adminFalse;
     RadioGroup engActiveRG, engAdminRG;
+
     private int _Engineer_Id = 0;
+
     RestService restService;
+
+    ArrayList<Customer> custList;
+    ArrayList<Customer> custListFilter;
+    ArrayList<Integer> engIdList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +67,10 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
         engAdminRG = (RadioGroup) findViewById(R.id.engAdminRG);
         adminTrue = (RadioButton) findViewById(R.id.adminTrue);
         adminFalse = (RadioButton) findViewById(R.id.adminFalse);
+
+        custList = new ArrayList<>();
+        engIdList = new ArrayList<>();
+        custListFilter = new ArrayList<>();
 
         btnSave.setOnClickListener(this);
         btnClose.setOnClickListener(this);
@@ -104,6 +121,22 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
             tvID.setVisibility(View.INVISIBLE);
             editTextId.setVisibility(View.INVISIBLE);
         }
+
+        //Calling getCustomer to save all CustomerObj
+        restService.getService().getCustomer(new Callback<List<Customer>>() {
+            @Override
+            public void success(List<Customer> customers, Response response) {
+                for(Customer c : customers)
+                {
+                    custList.add(c);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+            }
+        });
+
     }
 
     @Override
@@ -128,9 +161,18 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
-    public void randomAssign()
+    public void updateCustomer(Customer c)
     {
+        restService.getService().updateCustomerById(c.CustomerId, c, new Callback<Customer>()
+        {
+            @Override
+            public void success(Customer customer, Response response)
+            { }
 
+            @Override
+            public void failure(RetrofitError error)
+            { }
+        });
     }
 
     @Override
@@ -246,6 +288,46 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
                     public void success(Engineer engineer, Response response) {
                         Toast.makeText(Detail.this, "Engineer Record updated.", Toast.LENGTH_LONG).show();
                         btnSave.setEnabled(false);
+
+                        if(engActiveFalse.isChecked())
+                        {
+                            //Call to server to grab list of student records. this is a asyn
+                            restService.getService().getEngineer(new Callback<List<Engineer>>() {
+                                @Override
+                                public void success(List<Engineer> engineers, Response response) {
+                                    //Store ID of Active == true Engineers, used to random pick ID later to assign
+                                    //to Customers that is under the currect going to be inactive Engineer
+                                    for(Engineer e : engineers)
+                                    {
+                                        if(e.Active)
+                                        {
+                                            engIdList.add(e.Id);
+                                        }
+                                    }
+                                    //Select customer that is under this going to be inactive Engineer
+                                    for(Customer c : custList)
+                                    {
+                                        if(c.EngineerId == _Engineer_Id)
+                                        {
+                                            custListFilter.add(c);
+                                        }
+                                    }
+                                    //Assign new engineer ID to each customer randmly and update the customer
+                                    for(Customer cf : custListFilter)
+                                    {
+                                        Random rand = new Random();
+                                        int n = rand.nextInt(engIdList.size());
+                                        cf.EngineerId = engIdList.get(n);
+                                        updateCustomer(cf);
+                                    }
+
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+                                }
+                            });
+                        }
                     }
 
                     @Override

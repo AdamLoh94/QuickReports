@@ -23,14 +23,23 @@ import retrofit.client.Response;
 public class CustomerDetailsActivity extends AppCompatActivity implements android.view.View.OnClickListener {
 
     Button btnSave, btnClose;
+
     TextView tvCustID;
+
     EditText editTextCustID, editTextName, editTextContact, editTextAddress, editTextEngName;
+
     RadioButton rbTrue, rbFalse;
     RadioGroup activeRG;
+
     List<Engineer> engAll;
+    List<Engineer> engListActiveOnly;
+
     ArrayList<String> engName = new ArrayList<String>();
+
     private int _Customer_Id = 0;
+
     RestService restService;
+
     UserSessionManager session;
 
     @Override
@@ -58,13 +67,23 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
         rbTrue = (RadioButton) findViewById(R.id.activeTrue);
         rbFalse = (RadioButton) findViewById(R.id.activeFalse);
 
+        engListActiveOnly = new ArrayList<>();
+
         restService.getService().getEngineer(new Callback<List<Engineer>>() {
             @Override
             public void success(List<Engineer> engineers, Response response) {
                 engAll = engineers;
                 for(Engineer e: engineers)
                 {
+                    //Add name to Engineer list to display Name
                     engName.add(String.valueOf(e.Name));
+                    //Adding Active admins into List so to validate in the form
+                    //Preventing user from adding Engineer name that is not active
+                    if(e.Active)
+                    {
+                        engListActiveOnly.add(e);
+                    }
+
                 }
             }
 
@@ -228,21 +247,37 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
 //            customer.EngineerId = Integer.parseInt(editTextEngName.getText().toString());
 
             boolean checkExist = false;
+            boolean checkActive = false;
 
-            //check customer exist
+            //check customer exist & if engineer is existed
             loop1:
             for (Engineer e : engAll) {
                 if (e.Name.equals(editTextEngName.getText().toString())) {
-                    customer.EngineerId = e.Id;
-                    Toast.makeText(CustomerDetailsActivity.this, "Engineer successfully added!",
-                            Toast.LENGTH_SHORT).show();
                     checkExist = true;
-                    break loop1;
+                    for(Engineer a : engListActiveOnly)
+                    {
+                        if(a.Name.equals(editTextEngName.getText().toString()))
+                        {
+                            customer.EngineerId = a.Id;
+                            Toast.makeText(CustomerDetailsActivity.this, "Engineer successfully added!",
+                                    Toast.LENGTH_SHORT).show();
+                            checkActive = true;
+                            break loop1;
+                        }
+                    }
                 }
             }
 
+            //checkExist false means Engineer does not exist
             if(checkExist == false){
                 Toast.makeText(CustomerDetailsActivity.this, "Engineer does not exist!",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            //checkActive false mean Engineer entered not active
+            if(checkActive == false){
+                Toast.makeText(CustomerDetailsActivity.this, "Engineer is not Active!",
                         Toast.LENGTH_LONG).show();
                 return;
             }
