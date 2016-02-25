@@ -26,7 +26,11 @@
         android:ems="10"
         android:id="@+id/editTextId"
         android:layout_alignTop="@+id/textViewId"
-        android:layout_toEndOf="@+id/textViewHP" />
+        android:layout_toEndOf="@+id/textViewHP"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
 
     <TextView
         android:layout_width="wrap_content"

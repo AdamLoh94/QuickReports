@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import retrofit.Callback;
@@ -20,6 +21,7 @@ import retrofit.client.Response;
 public class Detail extends AppCompatActivity implements android.view.View.OnClickListener {
 
     Button btnSave, btnClose;
+    TextView tvID;
     EditText editTextId, editTextName, editTextUsername, editTextPw, editTextEmail, editTextHP;
     RadioButton engActiveTrue, engActiveFalse, adminTrue, adminFalse;
     RadioGroup engActiveRG, engAdminRG;
@@ -34,6 +36,8 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
 
         btnSave = (Button) findViewById(R.id.btnSave);
         btnClose = (Button) findViewById(R.id.btnClose);
+
+        tvID = (TextView) findViewById(R.id.textViewId);
 
         editTextId = (EditText) findViewById(R.id.editTextId);
         editTextName = (EditText) findViewById(R.id.editTextName);
@@ -57,7 +61,7 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
         _Engineer_Id = 0;
         Intent intent = getIntent();
         _Engineer_Id = intent.getIntExtra("engineerName", 0);
-        if (_Engineer_Id > 0) {
+        if (_Engineer_Id > 0) /*Editing Engineer, calling Engineer info by ID*/ {
             restService.getService().getEngineerByID(_Engineer_Id, new Callback<Engineer>() {
                 @Override
                 public void success(Engineer engineer, Response response) {
@@ -94,6 +98,11 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
 
                 }
             });
+        }
+        else //Adding new Engineer, making ID textView & ID editText Invisible
+        {
+            tvID.setVisibility(View.INVISIBLE);
+            editTextId.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -134,19 +143,12 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
         else if (findViewById(R.id.btnSave) == v)
         {
             //validations
-            final String ID = editTextId.getText().toString();
             final String Name = editTextName.getText().toString();
             final String Username = editTextUsername.getText().toString();
             final String Pw = editTextPw.getText().toString();
             final String Email = editTextEmail.getText().toString();
             final String HP = editTextHP.getText().toString();
 
-            //Validation ID
-            if (ID.length() == 0) {
-                editTextId.requestFocus();
-                editTextId.setError("FIELD CANNOT BE EMPTY!!");
-                return; //exit out of submit form method
-            }
             //Validation Name
             if (Name.length() == 0) {
                 editTextName.requestFocus();
@@ -191,7 +193,7 @@ public class Detail extends AppCompatActivity implements android.view.View.OnCli
 
             Engineer engineer = new Engineer();
             Integer status = 0;
-            engineer.Id = Integer.parseInt(editTextId.getText().toString());
+            engineer.Id = _Engineer_Id;
             engineer.Name = editTextName.getText().toString();
             engineer.Username = editTextUsername.getText().toString();
             engineer.Password = editTextPw.getText().toString();

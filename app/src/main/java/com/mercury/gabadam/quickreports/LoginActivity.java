@@ -50,14 +50,21 @@ public class LoginActivity extends AppCompatActivity {
                     {
                         if (pw.equals(a.Password))
                         {
-                            Toast.makeText(LoginActivity.this, "Redirecting..", Toast.LENGTH_SHORT).show();
-                            session.createUserLoginSession(a.Id, a.Username);
-                            Intent intent = new Intent("com.mercury.gabadam.quickreports.HomeActivity");
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            // Add new Flag to start new Activity
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            finish();
+                            if(a.Admin)
+                            {
+                                Toast.makeText(LoginActivity.this, "Redirecting..", Toast.LENGTH_SHORT).show();
+                                session.createUserLoginSession(a.Id, a.Username);
+                                Intent intent = new Intent("com.mercury.gabadam.quickreports.HomeActivity");
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                // Add new Flag to start new Activity
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else
+                            {
+                                Toast.makeText(LoginActivity.this, "User is not an Admin", Toast.LENGTH_SHORT).show();
+                            }
                         }
                         else
                         {

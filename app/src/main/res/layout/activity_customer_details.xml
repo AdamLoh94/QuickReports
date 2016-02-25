@@ -25,7 +25,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/textViewCustID"
-        android:layout_alignStart="@+id/editTextAddress" />
+        android:layout_alignStart="@+id/editTextAddress"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
 
     <TextView
         android:layout_width="wrap_content"

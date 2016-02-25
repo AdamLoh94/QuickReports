@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import retrofit.client.Response;
 public class CustomerDetailsActivity extends AppCompatActivity implements android.view.View.OnClickListener {
 
     Button btnSave, btnClose;
+    TextView tvCustID;
     EditText editTextCustID, editTextName, editTextContact, editTextAddress, editTextEngName;
     RadioButton rbTrue, rbFalse;
     RadioGroup activeRG;
@@ -43,6 +45,8 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
 
         btnSave.setOnClickListener(this);
         btnClose.setOnClickListener(this);
+
+        tvCustID = (TextView) findViewById(R.id.textViewCustID);
 
         editTextCustID = (EditText) findViewById(R.id.editTextCustID);
         editTextName = (EditText) findViewById(R.id.editTextName);
@@ -110,11 +114,13 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
 
                 }
 
-
             });
         }
-
-
+        else
+        {
+            tvCustID.setVisibility(View.INVISIBLE);
+            editTextCustID.setVisibility(View.INVISIBLE);
+        }
 
 
     }
@@ -161,23 +167,11 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
         {
 
             //validations Initialization
-            final String CustID = editTextCustID.getText().toString();
             final String Name = editTextName.getText().toString();
             final String Contact = editTextContact.getText().toString();
             final String CustAddress = editTextAddress.getText().toString();
             final String EngName = editTextEngName.getText().toString();
 
-            //Validation CustID
-            if (CustID.length() == 0) {
-                editTextCustID.requestFocus();
-                editTextCustID.setError("FIELD CANNOT BE EMPTY!!");
-                return; //exit out of submit form method
-            }
-            else if(!isInteger(CustID)){
-                editTextCustID.requestFocus();
-                editTextCustID.setError("Customer ID must be in Integer format(e.g. 1 or 2, etc.)");
-                return;
-            }
             //Validate Name
             if (Name.length() == 0)
             {
@@ -227,7 +221,7 @@ public class CustomerDetailsActivity extends AppCompatActivity implements androi
 
             Customer customer = new Customer();
             Integer status = 0;
-            customer.CustomerId = Integer.parseInt(editTextCustID.getText().toString());
+            customer.CustomerId = _Customer_Id;
             customer.Name = editTextName.getText().toString();
             customer.Contact = Integer.parseInt(editTextContact.getText().toString());
             customer.Customeraddress = editTextAddress.getText().toString();
